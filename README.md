@@ -9,17 +9,18 @@ Papers studying how deep reinforcement learning agents scale under RL objectives
 ## Core Questions
 
 - Does deep RL exhibit predictable scaling behavior similar to supervised learning?
-- When do larger models, more data, or more compute improve RL performance?
+- When do larger models, more data, larger batches, or more compute improve RL performance?
 - What breaks scaling under RL objectives?
+- Which algorithmic and implementation choices make on-policy scaling stable or brittle?
 - Which remedies restore stable scaling?
 
 ## Scope
 
 ### In Scope
 
-- Online deep RL, value-based RL, actor-critic RL, offline RL with value or policy improvement, and self-play RL.
+- Online deep RL, on-policy policy-gradient RL, value-based RL, actor-critic RL, offline RL with value or policy improvement, and self-play RL.
 - Robot or embodied RL only when the paper explicitly studies scaling under an RL objective.
-- Scaling of model size, depth, width, representation capacity, critic capacity, actor capacity, update-to-data ratio, replay, data, distributed compute, and remedies for scaling failures.
+- Scaling of model size, depth, width, representation capacity, critic capacity, actor capacity, batch size, rollout parallelism, update-to-data ratio, replay, data, distributed compute, and remedies for scaling failures.
 
 ### Out of Scope
 
@@ -28,6 +29,7 @@ Papers studying how deep reinforcement learning agents scale under RL objectives
 - Decision Transformer, Trajectory Transformer, Gato, and similar supervised trajectory-modeling papers.
 - Model-based RL and world-model scaling for v1.
 - Papers that only use "large-scale" as an engineering descriptor without analyzing scaling behavior or RL-specific bottlenecks.
+- Ordinary implementation-tuning or benchmark papers unless they analyze scaling-relevant behavior under an RL objective.
 
 ## Why RL Scaling Is Hard
 
@@ -36,30 +38,18 @@ Scaling deep RL is not just supervised scaling with a different loss. RL agents 
 - non-stationary targets;
 - bootstrapping and critic error amplification;
 - exploration and data distribution shift;
+- on-policy data freshness and rollout-fragmentation tradeoffs;
 - actor-critic capacity mismatch;
 - plasticity loss, primacy bias, and dormant features;
 - sensitivity to normalization, update ratios, and optimizer dynamics.
-
-## Tag Legend
-
-`[scaling-law]` `[model-size]` `[depth]` `[width]` `[representation]` `[critic]` `[actor]` `[utd]` `[replay]` `[data]` `[compute]` `[distributed]` `[offline-rl]` `[self-play]` `[robotics]` `[transformer]` `[moe]` `[plasticity]` `[normalization]` `[instability]`
-
-## News
-
-- [2026.06.19] Added depth, Transformer Q-function, and offline robotic Q-learning scaling papers.
-- [2026.06.18] Initial v1 curated list released.
-
-## Citation
-
-No survey citation is available yet. If this list becomes useful for a paper or survey, a citation entry will be added here.
 
 ## Table of Contents
 
 - [Core Questions](#core-questions)
 - [Scope](#scope)
 - [Why RL Scaling Is Hard](#why-rl-scaling-is-hard)
-- [Tag Legend](#tag-legend)
 - [Scaling Laws & Predictability](#scaling-laws--predictability)
+- [On-Policy Scaling and Implementation Choices](#on-policy-scaling-and-implementation-choices)
 - [Network and Representation Capacity](#network-and-representation-capacity)
 - [Actor-Critic Capacity and Update Ratios](#actor-critic-capacity-and-update-ratios)
 - [Data, Replay and Compute](#data-replay-and-compute)
@@ -75,6 +65,12 @@ No survey citation is available yet. If this list becomes useful for a paper or 
 | <br>[**Scaling laws for single-agent reinforcement learning**](https://arxiv.org/abs/2301.13442) <br> | arXiv | 2023 | `[scaling-law] [model-size] [data]` Defines intrinsic performance and reports power-law scaling with model size and environment interactions. | - | - |
 | <br>[**Scaling Laws for a Multi-Agent Reinforcement Learning Model**](https://arxiv.org/abs/2210.00849) <br> | arXiv | 2022 | `[scaling-law] [model-size] [compute] [self-play]` Finds AlphaZero playing strength scales with parameter count when not compute-bottlenecked, and with compute for optimally sized agents. | - | - |
 | <br>[**Scaling Scaling Laws with Board Games**](https://arxiv.org/abs/2104.03113) <br> | arXiv | 2021 | `[scaling-law] [compute] [self-play]` Uses AlphaZero on Hex to show problem size and train/test-time compute tradeoffs can be extrapolated from smaller runs. | - | - |
+
+## On-Policy Scaling and Implementation Choices
+
+| Title | Venue | Year | Axis / Finding | Code | Project |
+|:------|:-----:|:----:|:---------------|:----:|:-------:|
+| <br>[**What Matters In On-Policy Reinforcement Learning? A Large-Scale Empirical Study**](https://arxiv.org/abs/2006.05990) <br> | arXiv | 2020 | `[on-policy] [policy-gradient] [actor] [critic] [batch-size] [parallelism] [normalization] [implementation]` Large-scale ablation of PPO-style on-policy RL showing that trust-region losses, policy initialization, actor/critic capacity choices, normalization, data reuse, batch size, and parallel environments strongly affect sample and wall-clock scaling. | - | - |
 
 ## Network and Representation Capacity
 
